@@ -99,8 +99,8 @@ groups = [Group(i, label=l) for i, l in zip("123456789",
                                              "Chat" ,
                                              "Videos",
                                              "Songs",
-                                             "Random 7",
-                                             "Random 8",
+                                             "Study",
+                                             "Random",
                                              "TRASH",
                                             ]
                                            )
