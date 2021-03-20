@@ -116,7 +116,7 @@ layouts = [
                    border_width=1,
                    name='columns'),
     layout.Max(),
-    # Try more layouts by unleashing below layout.
+    # Try more layouts by unleashing below layout - did't really like any.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
@@ -138,25 +138,41 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        bottom=bar.Bar(
+        top=bar.Bar(
             [
                 widget.CurrentLayout(),
-                widget.GroupBox(),
+                widget.GroupBox(this_current_screen_border="ffffff",
+                                borderwidth=2,
+                                inactive="6a6a6a"),
                 widget.Prompt(),
                 widget.WindowName(),
                 widget.Chord(
                     chords_colors={
-                        'launch': ("#ff0000", "#ffffff"),
+                        'launch': ("#222222", "#ffffff"),
                     },
                     name_transform=lambda name: name.upper(),
                 ),
                 # widget.TextBox("default config", name="default"),
                 # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                widget.Systray(),
-                widget.Clock(format='%A | %d-%m-%Y %I:%M %p'),
+                widget.Battery(discharge_char=u'\U0001f4bb',
+                               full_char=u"\U0001f50b",
+                               charge_char=u"\U0001f50c",
+                               format='{char} {percent:2.0%}'),
+                # widget.Systray(),
+                widget.Clock(format='| %A | %d-%m-%Y %I:%M %p'),
                 widget.QuickExit(),
             ],
             24,
+            # background="#010328",
+            # opacity=0,
+            # margin=1,
+        ),
+        bottom=bar.Bar(
+            [
+                widget.CPU(format="CPU: {freq_current}GHz, {load_percent}%"),
+                widget.CPUGraph(),
+            ],
+            24
         ),
     ),
 ]
