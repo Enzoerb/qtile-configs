@@ -91,7 +91,20 @@ keys = [
         desc="Spawn a command using a prompt widget"),
 ]
 
-groups = [Group(i) for i in "123456789"]
+groups = [Group(i, label=l) for i, l in zip("123456789", 
+                                            [
+                                             "Term",
+                                             "Browser",
+                                             "Dev",
+                                             "Chat" ,
+                                             "Videos",
+                                             "Songs",
+                                             "Random 7",
+                                             "Random 8",
+                                             "TRASH",
+                                            ]
+                                           )
+        ]
 
 for i in groups:
     keys.extend([
@@ -153,7 +166,11 @@ screens = [
                     name_transform=lambda name: name.upper(),
                 ),
                 # widget.TextBox("default config", name="default"),
-                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                widget.Pomodoro(length_pomodori=30,
+                                color_inactive="ffffff"),
+                widget.TextBox(" | "),
+                # widget.Volume(), 
+                # widget.TextBox(" | "),
                 widget.Battery(discharge_char=u'\U0001f4bb',
                                full_char=u"\U0001f50b",
                                charge_char=u"\U0001f50c",
@@ -169,8 +186,13 @@ screens = [
         ),
         bottom=bar.Bar(
             [
+                widget.CurrentLayoutIcon(),
                 widget.CPU(format="CPU: {freq_current}GHz, {load_percent}%"),
                 widget.CPUGraph(),
+                widget.Memory(),
+                widget.MemoryGraph(),
+                widget.Net(format='Down: {down} Up: {up}'),
+                widget.NetGraph(),
             ],
             24
         ),
