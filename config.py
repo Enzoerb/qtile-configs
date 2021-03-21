@@ -71,7 +71,7 @@ keys = [
     Key([mod], "a", lazy.spawn("atom"), desc="Open Atom"),
     Key([mod], "b", lazy.spawn("brave"), desc="Open Brave"),
     Key([mod], "c", lazy.spawn("dde-control-center -s"), desc="Open Control Center"),
-
+    Key([mod], "d", lazy.spawn("obsidian-insider"), desc="Open Obsidian"),
 
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
