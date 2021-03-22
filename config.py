@@ -149,8 +149,8 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-up_volume = lambda: subprocess.call(['pactl', '--', 'set-sink-volume', '0', '+5%'])
-down_volume = lambda: subprocess.call(['pactl', '--', 'set-sink-volume', '0', '-5%'])
+up_volume = lambda: subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '5%+'])
+down_volume = lambda: subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '5%-'])
 
 screens = [
     Screen(
