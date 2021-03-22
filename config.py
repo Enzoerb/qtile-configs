@@ -24,6 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import subprocess
 from typing import List  # noqa: F401
 
 from libqtile import bar, layout, widget
@@ -70,7 +71,6 @@ keys = [
     # Launch Applications
     Key([mod], "a", lazy.spawn("atom"), desc="Open Atom"),
     Key([mod], "b", lazy.spawn("brave"), desc="Open Brave"),
-    Key([mod], "c", lazy.spawn("dde-control-center -s"), desc="Open Control Center"),
     Key([mod], "d", lazy.spawn("obsidian-insider"), desc="Open Obsidian"),
 
     # Toggle between split and unsplit sides of stack.
@@ -149,12 +149,17 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+up_volume = lambda: subprocess.call(['pactl', '--', 'set-sink-volume', '0', '+5%'])
+down_volume = lambda: subprocess.call(['pactl', '--', 'set-sink-volume', '0', '-5%'])
+
 screens = [
     Screen(
         top=bar.Bar(
             [
-                widget.Image(filename='/usr/share/pixmaps/archlinux-logo.svg'),
-                widget.CurrentLayout(),
+                widget.Image(filename='/usr/share/pixmaps/archlinux-logo.svg',
+                             background='#444444'),
+                widget.CurrentLayout(background='#444444'),
+                widget.TextBox("", foreground='#444444', fontsize=37, padding=0),
                 widget.GroupBox(this_current_screen_border="ffffff",
                                 borderwidth=2,
                                 inactive="6a6a6a"),
@@ -166,30 +171,43 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
+                
                 widget.TextBox("", foreground='#ccccff', fontsize=30, padding=0),
-                widget.Pomodoro(length_pomodori=30,
+                widget.Pomodoro(length_pomodori=25,
                                 color_inactive="000000",
                                 color_active='006400',
+                                color_break='ff7538',
                                 background="ccccff"),
                 widget.TextBox("", foreground='#ccccff', fontsize=37, padding=0),
-                #widget.Volume(), 
+                
                 widget.TextBox("", foreground='#9999ff', fontsize=37, padding=-4),
-                widget.TextBox("Battery: ", background='#9999ff', foreground='#000000'),
-                widget.Battery(format='{percent:2.0%}',
+                widget.BatteryIcon(background='#9999ff', foreground='#000000'),
+                widget.Battery(format='  {percent:2.0%}',
                                background='#9999ff', 
                                foreground='#000000',
                                padding=0),
                 widget.TextBox("", foreground='#9999ff', fontsize=37, padding=0),
+                
+                widget.TextBox("", foreground='#8776ff', fontsize=37, padding=-4),
+                widget.TextBox(u"\U0001F50a ", background='#8776ff', foreground='#000000',
+                               fontsize=16,
+                               mouse_callbacks={"Button1": up_volume,
+                                                "Button3": down_volume}
+                               ),
+                widget.Volume(background="#8776ff", foreground='#000000'), 
+                widget.TextBox("", foreground='#8776ff', fontsize=37, padding=0),
+                
                 widget.TextBox("", foreground='#6666ff', fontsize=37, padding=-4),
-                widget.Clock(format='%A | %d-%m-%Y %I:%M %p',
+                widget.Clock(format='%A | %d-%m-%Y %H:%M',
                              foreground='#000000',
                              background='#6666ff'),
                 widget.TextBox("", foreground='#6666ff', fontsize=37, padding=0),
-                widget.TextBox("", foreground='#4444ff', fontsize=37, padding=-4),
+                
+                widget.TextBox("", foreground='#4455ff', fontsize=37, padding=-4),
                 widget.QuickExit(default_text='[ shutdown ]  ',
                                  countdown_format='[ {} seconds ]  ',
-                                 background='#4444ff', foreground='000000', padding=0),
-                widget.TextBox("▒", foreground='4444ff', fontsize=30, padding=0)
+                                 background='#4455ff', foreground='000000', padding=0),
+                widget.TextBox("▒", foreground='4455ff', fontsize=30, padding=0)
             ],
             24,
             # background="#010328",
