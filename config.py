@@ -79,7 +79,7 @@ keys = [
     # multiple stack panes
     Key([mod, "shift"], "Return", lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack"),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "Return", lazy.spawn('kitty'), desc="Launch terminal"),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -153,6 +153,7 @@ screens = [
     Screen(
         top=bar.Bar(
             [
+                widget.Image(filename='/usr/share/pixmaps/archlinux-logo.svg'),
                 widget.CurrentLayout(),
                 widget.GroupBox(this_current_screen_border="ffffff",
                                 borderwidth=2,
@@ -165,24 +166,35 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                # widget.TextBox("default config", name="default"),
+                widget.TextBox("", foreground='#ccccff', fontsize=30, padding=0),
                 widget.Pomodoro(length_pomodori=30,
-                                color_inactive="ffffff"),
-                widget.TextBox(" | "),
-                # widget.Volume(), 
-                # widget.TextBox(" | "),
-                widget.Battery(discharge_char=u'\U0001f4bb',
-                               full_char=u"\U0001f50b",
-                               charge_char=u"\U0001f50c",
-                               format='{char} {percent:2.0%}'),
-                # widget.Systray(),
-                widget.Clock(format='| %A | %d-%m-%Y %I:%M %p'),
-                widget.QuickExit(),
+                                color_inactive="000000",
+                                color_active='006400',
+                                background="ccccff"),
+                widget.TextBox("", foreground='#ccccff', fontsize=37, padding=0),
+                #widget.Volume(), 
+                widget.TextBox("", foreground='#9999ff', fontsize=37, padding=-4),
+                widget.TextBox("Battery: ", background='#9999ff', foreground='#000000'),
+                widget.Battery(format='{percent:2.0%}',
+                               background='#9999ff', 
+                               foreground='#000000',
+                               padding=0),
+                widget.TextBox("", foreground='#9999ff', fontsize=37, padding=0),
+                widget.TextBox("", foreground='#6666ff', fontsize=37, padding=-4),
+                widget.Clock(format='%A | %d-%m-%Y %I:%M %p',
+                             foreground='#000000',
+                             background='#6666ff'),
+                widget.TextBox("", foreground='#6666ff', fontsize=37, padding=0),
+                widget.TextBox("", foreground='#4444ff', fontsize=37, padding=-4),
+                widget.QuickExit(default_text='[ shutdown ]  ',
+                                 countdown_format='[ {} seconds ]  ',
+                                 background='#4444ff', foreground='000000', padding=0),
+                widget.TextBox("▒", foreground='4444ff', fontsize=30, padding=0)
             ],
             24,
             # background="#010328",
-            # opacity=0,
-            # margin=1,
+            opacity=1,
+            margin=2,
         ),
         bottom=bar.Bar(
             [
@@ -194,7 +206,8 @@ screens = [
                 widget.Net(format='Down: {down} Up: {up}'),
                 widget.NetGraph(),
             ],
-            24
+            24,
+            opacity=0.9,
         ),
     ),
 ]
@@ -211,7 +224,7 @@ mouse = [
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: List
 main = None  # WARNING: this is deprecated and will be removed soon
-follow_mouse_focus = True
+follow_mouse_focus = False
 bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
