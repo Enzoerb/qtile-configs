@@ -152,7 +152,7 @@ extension_defaults = widget_defaults.copy()
 # anonymous functions used inside widgets
 up_volume = lambda: subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '5%+'])
 down_volume = lambda: subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '5%-'])
-sgtk_menu = lambda: subprocess.call(['sgtk-menu'])
+sgtk_menu = lambda: subprocess.call(['sgtk-menu', '-fn', '5', '-o', '0.9', '-y', '25'])
 
 screens = [
     Screen(
