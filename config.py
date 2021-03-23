@@ -149,15 +149,19 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+# anonymous functions used inside widgets
 up_volume = lambda: subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '5%+'])
 down_volume = lambda: subprocess.call(['amixer', '-D', 'pulse', 'sset', 'Master', '5%-'])
+sgtk_menu = lambda: subprocess.call(['sgtk-menu'])
 
 screens = [
     Screen(
         top=bar.Bar(
             [
                 widget.Image(filename='/usr/share/pixmaps/archlinux-logo.svg',
-                             background='#444444'),
+                             background='#444444',
+                             mouse_callbacks={"Button1": sgtk_menu}
+                             ),
                 widget.CurrentLayout(background='#444444'),
                 widget.TextBox("", foreground='#444444', fontsize=37, padding=0),
                 widget.GroupBox(this_current_screen_border="ffffff",
@@ -206,7 +210,8 @@ screens = [
                 widget.TextBox("", foreground='#4455ff', fontsize=37, padding=-4),
                 widget.QuickExit(default_text='[ shutdown ]  ',
                                  countdown_format='[ {} seconds ]  ',
-                                 background='#4455ff', foreground='000000', padding=0),
+                                 background='#4455ff', foreground='000000', padding=0,
+                                 ),
                 widget.TextBox("▒", foreground='4455ff', fontsize=30, padding=0)
             ],
             24,
