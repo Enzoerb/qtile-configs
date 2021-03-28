@@ -24,8 +24,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import subprocess
 from typing import List  # noqa: F401
+import subprocess
 
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
@@ -65,7 +65,7 @@ keys = [
         desc="Grow window down"),
     Key([mod, "control"], "Up", lazy.layout.grow_up(), desc="Grow window up"),
     Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
-    
+
     # Print Screen
     Key([mod], "Print", lazy.spawn("gnome-screenshot -i"), desc="Screenshot Menu"),
 
@@ -90,28 +90,27 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(),
         desc="Spawn a command using a prompt widget"),
-    
+
     # Fn keys configure
     Key([], 'XF86AudioMute', lazy.spawn('amixer -D pulse set Master toggle')),
     Key([], 'XF86AudioRaiseVolume', lazy.spawn('amixer -D pulse sset Master 5%+')),
     Key([], 'XF86AudioLowerVolume', lazy.spawn('amixer -D pulse sset Master 5%-')),
-    
+
 ]
 
-groups = [Group(i, label=l) for i, l in zip("123456789", 
-                                            [
-                                             "Term",
-                                             "Browser",
-                                             "Dev",
-                                             "Chat" ,
-                                             "Videos",
-                                             "Songs",
-                                             "Study",
-                                             "Random",
-                                             "TRASH",
-                                            ]
-                                           )
-        ]
+group_configs = zip(
+                    # indexes type mod+index to access
+                    "1234567890",
+                    # labels in order
+                    ["Term", "Browser", "Dev", "Chat" , "Videos",
+                     "Songs", "Study", "Random 1", "Random 2", "TRASH"],
+                    # layouts in order
+                    ["column", "column", "column", "column" , "max",
+                     "column", "column", "column", "column", "column"]
+                    )
+
+groups = [Group(index, label=label, layout=layout)
+          for index, label, layout in group_configs]
 
 for i in groups:
     keys.extend([
@@ -129,7 +128,7 @@ for i in groups:
     ])
 
 layouts = [
-    layout.Columns(border_focus_stack='#d75f5f', 
+    layout.Columns(border_focus_stack='#d75f5f',
                    border_focus="#00ffff",
                    margin=3,
                    margin_on_single=0,
@@ -182,7 +181,7 @@ screens = [
                     },
                     name_transform=lambda name: name.upper(),
                 ),
-                
+
                 widget.TextBox("", foreground='#ccccff', fontsize=30, padding=0),
                 widget.Pomodoro(length_pomodori=25,
                                 color_inactive="000000",
@@ -190,30 +189,30 @@ screens = [
                                 color_break='ff7538',
                                 background="ccccff"),
                 widget.TextBox("", foreground='#ccccff', fontsize=37, padding=0),
-                
+
                 widget.TextBox("", foreground='#9999ff', fontsize=37, padding=-4),
                 widget.BatteryIcon(background='#9999ff', foreground='#000000'),
                 widget.Battery(format='  {percent:2.0%}',
-                               background='#9999ff', 
+                               background='#9999ff',
                                foreground='#000000',
                                padding=0),
                 widget.TextBox("", foreground='#9999ff', fontsize=37, padding=0),
-                
+
                 widget.TextBox("", foreground='#8776ff', fontsize=37, padding=-4),
                 widget.TextBox(u"\U0001F50a ", background='#8776ff', foreground='#000000',
                                fontsize=16,
                                mouse_callbacks={"Button1": up_volume,
                                                 "Button3": down_volume}
                                ),
-                widget.Volume(background="#8776ff", foreground='#000000'), 
+                widget.Volume(background="#8776ff", foreground='#000000'),
                 widget.TextBox("", foreground='#8776ff', fontsize=37, padding=0),
-                
+
                 widget.TextBox("", foreground='#6666ff', fontsize=37, padding=-4),
                 widget.Clock(format='%A | %d-%m-%Y %H:%M',
                              foreground='#000000',
                              background='#6666ff'),
                 widget.TextBox("", foreground='#6666ff', fontsize=37, padding=0),
-                
+
                 widget.TextBox("", foreground='#4455ff', fontsize=37, padding=-4),
                 widget.QuickExit(default_text='[ shutdown ]  ',
                                  countdown_format='[ {} seconds ]  ',
