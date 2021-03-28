@@ -32,7 +32,8 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
-mod = "mod4"
+# Super key = mod4, changed to mod1(Alt) due to external keyboard issues
+mod = "mod1"
 terminal = guess_terminal()
 
 keys = [
@@ -89,6 +90,12 @@ keys = [
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(),
         desc="Spawn a command using a prompt widget"),
+    
+    # Fn keys configure
+    Key([], 'XF86AudioMute', lazy.spawn('amixer -D pulse set Master toggle')),
+    Key([], 'XF86AudioRaiseVolume', lazy.spawn('amixer -D pulse sset Master 5%+')),
+    Key([], 'XF86AudioLowerVolume', lazy.spawn('amixer -D pulse sset Master 5%-')),
+    
 ]
 
 groups = [Group(i, label=l) for i, l in zip("123456789", 
